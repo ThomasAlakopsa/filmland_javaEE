@@ -15,14 +15,7 @@ public class LoginService {
         String email = user.getEmail();
         String password = user.getPassword();
 
-        User possibleUser = userRepository.findByEmail(email);
-
-        if (password.equals(possibleUser.getPassword())){
-            return Boolean.TRUE;
-        }else{
-            return Boolean.FALSE;
-        }
-
+        return password.equals(userRepository.findByEmail(email).getPassword());
     }
 
 }
