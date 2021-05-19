@@ -22,19 +22,8 @@ public class UserLogin {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response login(User user){
-
-        //get user input: username, password
-        //sent to login service
-        //if true respond login succesfull
-        //if false respond login failed
-        boolean status = loginService.checkCredentials(user);
-
-        if (status){
-            return Response.ok("Successfully logged in!").build();
-        }else{
-            return Response.ok("Failed to login!").build();
-        }
+        return loginService.checkCredentials(user) ?
+                Response.ok("Succesful login!").build() : Response.ok("Failed login!").build();
     }
 }

@@ -2,6 +2,7 @@ package nl.sogeti.rest;
 
 import nl.sogeti.model.User;
 import nl.sogeti.repository.UserRepository;
+import nl.sogeti.services.UserService;
 
 import javax.inject.Inject;
 import javax.validation.constraints.Min;
@@ -16,13 +17,15 @@ import java.net.URI;
 public class UserEndpoints {
 
     @Inject
-    private UserRepository userRepository;
+    private UserService userService;
+
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") @Min(1) Long id){
-        User user = userRepository.find(id);
+
+        User user = userService.getUser(id);
 
         if (user == null) {return Response.noContent().build();}
 
@@ -33,7 +36,7 @@ public class UserEndpoints {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(User user, @Context UriInfo uriInfo) {
-        user = userRepository.create(user);
+        user = userService.createUser(user);
         URI createURI = uriInfo.getBaseUriBuilder().path(user.getId().toString()).build();
         return Response.created(createURI).build();
     }
@@ -41,7 +44,7 @@ public class UserEndpoints {
     @DELETE
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") @Min(1) Long id) {
-        userRepository.delete(id);
+        userService.deleteUser(id);
         return Response.noContent().build();
     }
 
