@@ -11,7 +11,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public User getUser(Long id){
-        return userRepository.find(id);
+        return userRepository.find(id).orElseThrow();
     }
 
     public User createUser(User user){
@@ -20,6 +20,10 @@ public class UserService {
 
     public void deleteUser(Long id){
         userRepository.delete(id);
+    }
+
+    public boolean checkForDuplicateEmail(User user){
+        return userRepository.findByEmail(user.getEmail()) != null;
     }
 
 }

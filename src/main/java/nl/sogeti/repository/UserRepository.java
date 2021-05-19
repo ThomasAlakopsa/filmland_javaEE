@@ -5,6 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Transactional(Transactional.TxType.SUPPORTS)
 public class UserRepository {
@@ -12,7 +13,12 @@ public class UserRepository {
     @PersistenceContext(unitName = "filmlandPU")
     private EntityManager em;
 
-    public User find(Long id) {return em.find(User.class , id);}
+    public Optional<User> find(Long id) {
+
+        User user = em.find(User.class , id);
+
+        return user != null ? Optional.of(user) : Optional.empty();
+    }
 
     @Transactional(Transactional.TxType.REQUIRED)
     public void delete(Long id) {em.remove(em.getReference(User.class, id));}
