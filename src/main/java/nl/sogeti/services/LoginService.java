@@ -4,6 +4,7 @@ import nl.sogeti.model.User;
 import nl.sogeti.repository.UserRepository;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 
 public class LoginService {
 
@@ -15,7 +16,9 @@ public class LoginService {
         String email = user.getEmail();
         String password = user.getPassword();
 
-        return password.equals(userRepository.findByEmail(email).getPassword());
+        return password.equals(userRepository.findUserWithEmail(email)
+                .orElseThrow(() -> new NotFoundException("user not found"))
+                .getPassword());
     }
 
 }

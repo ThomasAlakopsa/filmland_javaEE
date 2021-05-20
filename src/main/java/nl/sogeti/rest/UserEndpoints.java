@@ -36,6 +36,7 @@ public class UserEndpoints {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(User user, @Context UriInfo uriInfo) {
+        if (userService.checkForDuplicateEmail(user)) return Response.ok("duplicate email").build();
         user = userService.createUser(user);
         URI createURI = uriInfo.getBaseUriBuilder().path(user.getId().toString()).build();
         return Response.created(createURI).build();

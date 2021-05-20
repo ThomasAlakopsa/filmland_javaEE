@@ -15,16 +15,18 @@ public class UserRepository {
 
     public Optional<User> find(Long id) {
 
-        User user = em.find(User.class , id);
+        User user = em.find(User.class, id);
 
         return user != null ? Optional.of(user) : Optional.empty();
     }
 
     @Transactional(Transactional.TxType.REQUIRED)
-    public void delete(Long id) {em.remove(em.getReference(User.class, id));}
+    public void delete(Long id) {
+        em.remove(em.getReference(User.class, id));
+    }
 
     @Transactional(Transactional.TxType.REQUIRED)
-    public User create(User user){
+    public User create(User user) {
         user.setFirstName(user.getFirstName());
         user.setLastName(user.getLastName());
         user.setEmail(user.getEmail());
@@ -33,9 +35,19 @@ public class UserRepository {
         return user;
     }
 
-    public User findByEmail(String email){
-        return (User) em.createQuery("SELECT u FROM User u WHERE u.email LIKE: custEmail")
-                .setParameter("custEmail", email)
-                .getSingleResult();
+//    public User findByEmail(String email){
+//        return (User) em.createQuery("SELECT u FROM User u WHERE u.email LIKE: custEmail")
+//                .setParameter("custEmail", email)
+//                .getSingleResult();
+//    }
+
+    public Optional<User> findUserWithEmail(String email) {
+        try {
+            User user = (User) em.createQuery("SELECT u FROM User u WHERE u.email LIKE: custEmail")
+                    .setParameter("custEmail", email).getSingleResult();
+            return Optional.of(user);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 }

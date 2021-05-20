@@ -4,6 +4,7 @@ import nl.sogeti.model.User;
 import nl.sogeti.repository.UserRepository;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 
 public class UserService {
 
@@ -11,7 +12,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public User getUser(Long id){
-        return userRepository.find(id).orElseThrow();
+        return userRepository.find(id).orElseThrow(() -> new NotFoundException("file not found"));
     }
 
     public User createUser(User user){
@@ -23,7 +24,7 @@ public class UserService {
     }
 
     public boolean checkForDuplicateEmail(User user){
-        return userRepository.findByEmail(user.getEmail()) != null;
+        return userRepository.findUserWithEmail(user.getEmail()).isPresent();
     }
 
 }
