@@ -16,8 +16,8 @@ public class UserService {
         return userRepository.find(id).orElseThrow(() -> new NotFoundException("file not found"));
     }
 
-    public User createUser(User user){
-        return userRepository.create(user);
+    public void createUser(User user){
+        userRepository.create(user);
     }
 
     public void deleteUser(Long id){

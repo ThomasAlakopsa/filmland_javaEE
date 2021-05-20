@@ -26,25 +26,23 @@ public class UserEndpoints {
     public Response getUser(@PathParam("id") @Min(1) Long id){
 
         User user = userService.getUser(id);
-
         if (user == null) {return Response.noContent().build();}
-
         return Response.ok(user).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(User user, @Context UriInfo uriInfo) {
+    public Response createUser(User user) {
+
         if (!userService.checkForDuplicateEmail(user)) return Response.ok("Email already taken").build();
-        user = userService.createUser(user);
-        URI createURI = uriInfo.getBaseUriBuilder().path(user.getId().toString()).build();
-        return Response.created(createURI).build();
+        userService.createUser(user);
+        return Response.ok("Account succesfully created!").build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") @Min(1) Long id) {
+
         userService.deleteUser(id);
         return Response.noContent().build();
     }
