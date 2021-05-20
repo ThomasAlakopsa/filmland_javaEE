@@ -35,18 +35,29 @@ public class UserRepository {
         return user;
     }
 
-//    public User findByEmail(String email){
-//        return (User) em.createQuery("SELECT u FROM User u WHERE u.email LIKE: custEmail")
-//                .setParameter("custEmail", email)
-//                .getSingleResult();
+//    public Optional<User> findUserWithEmail(String email) {
+//        try {
+//            User user = (User) em.createQuery("SELECT u FROM User u WHERE u.email LIKE: custEmail")
+//                    .setParameter("custEmail", email).getSingleResult();
+//            return Optional.of(user);
+//        } catch (Exception e) {
+//            return Optional.empty();
+//        }
 //    }
 
     public Optional<User> findUserWithEmail(String email) {
-        try {
+        int numOfUserWithThatEmail = (em.createQuery("SELECT u FROM User u WHERE u.email LIKE: custEmail")
+                   .setParameter("custEmail", email).getResultList()).size();
+
+        System.out.println("number of users: " + numOfUserWithThatEmail);
+
+        if (numOfUserWithThatEmail == 1){
             User user = (User) em.createQuery("SELECT u FROM User u WHERE u.email LIKE: custEmail")
-                    .setParameter("custEmail", email).getSingleResult();
+                                .setParameter("custEmail", email).getSingleResult();
+            System.out.println("Returning 1 user");
             return Optional.of(user);
-        } catch (Exception e) {
+        }else{
+            System.out.println("Returning empty");
             return Optional.empty();
         }
     }

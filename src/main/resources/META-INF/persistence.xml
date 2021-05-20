@@ -5,8 +5,8 @@
              version="2.2">
     <persistence-unit name="filmlandPU">
         <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="create"/>
-            <property name="javax.persistence.schema-generation.scripts.action" value="create"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
             <property name="javax.persistence.schema-generation.scripts.create-target" value="filmLandCreate.ddl"/>
             <property name="javax.persistence.schema-generation.scripts.drop-target" value="filmLandDrop.ddl"/>
         </properties>

@@ -5,6 +5,7 @@ import nl.sogeti.repository.UserRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
+import java.util.Optional;
 
 public class UserService {
 
@@ -24,7 +25,8 @@ public class UserService {
     }
 
     public boolean checkForDuplicateEmail(User user){
-        return userRepository.findUserWithEmail(user.getEmail()).isPresent();
+        Optional<User> foo = userRepository.findUserWithEmail(user.getEmail());
+        return foo.isEmpty();
     }
 
 }
