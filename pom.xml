@@ -19,6 +19,7 @@
         <javax.api.version>8.0.1</javax.api.version>
         <h2.database.version>1.4.200</h2.database.version>
         <maven.war.version>3.3.0</maven.war.version>
+        <modelmapper.version>2.4.2</modelmapper.version>
     </properties>
 
     <dependencies>
@@ -43,6 +44,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.database.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
         </dependency>
     </dependencies>
 

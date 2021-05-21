@@ -3,8 +3,8 @@ package nl.sogeti.repository;
 import nl.sogeti.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,19 +21,24 @@ public class UserRepository {
         return user != null ? Optional.of(user) : Optional.empty();
     }
 
+    public List<User> getAllUsers(){
+        List<User> foo = em.createQuery("SELECT u FROM User u", User.class).getResultList();
+        System.out.println("in repo" + foo);
+        return foo;
+    }
+
     @Transactional(Transactional.TxType.REQUIRED)
     public void delete(Long id) {
         em.remove(em.getReference(User.class, id));
     }
 
     @Transactional(Transactional.TxType.REQUIRED)
-    public User create(User user) {
+    public void create(User user) {
         user.setFirstName(user.getFirstName());
         user.setLastName(user.getLastName());
         user.setEmail(user.getEmail());
         user.setPassword(user.getPassword());
         em.persist(user);
-        return user;
     }
 
     public Optional<User> findUserWithEmail(String email) {
@@ -42,6 +47,4 @@ public class UserRepository {
 
         return userList.isEmpty() ? Optional.empty() : Optional.of(userList.get(0));
     }
-
-    //TODO catch exeption if email already exist
 }
