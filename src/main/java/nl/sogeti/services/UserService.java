@@ -4,6 +4,7 @@ import nl.sogeti.model.User;
 import nl.sogeti.repository.UserRepository;
 
 import javax.inject.Inject;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 import java.util.Optional;
 
@@ -17,16 +18,14 @@ public class UserService {
     }
 
     public void createUser(User user){
+        if(userRepository.findUserWithEmail(user.getEmail()).isPresent()) {
+            throw new InternalServerErrorException();
+        }
         userRepository.create(user);
     }
 
     public void deleteUser(Long id){
         userRepository.delete(id);
-    }
-
-    public boolean checkForDuplicateEmail(User user){
-        Optional<User> foo = userRepository.findUserWithEmail(user.getEmail());
-        return foo.isEmpty();
     }
 
 }

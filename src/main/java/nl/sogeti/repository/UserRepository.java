@@ -5,6 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional(Transactional.TxType.SUPPORTS)
@@ -35,30 +36,12 @@ public class UserRepository {
         return user;
     }
 
-//    public Optional<User> findUserWithEmail(String email) {
-//        try {
-//            User user = (User) em.createQuery("SELECT u FROM User u WHERE u.email LIKE: custEmail")
-//                    .setParameter("custEmail", email).getSingleResult();
-//            return Optional.of(user);
-//        } catch (Exception e) {
-//            return Optional.empty();
-//        }
-//    }
-
     public Optional<User> findUserWithEmail(String email) {
-        int numOfUserWithThatEmail = (em.createQuery("SELECT u FROM User u WHERE u.email LIKE: custEmail")
-                   .setParameter("custEmail", email).getResultList()).size();
+        List<User> userList = (em.createQuery("SELECT u FROM User u WHERE u.email LIKE: custEmail")
+                   .setParameter("custEmail", email).getResultList());
 
-        System.out.println("number of users: " + numOfUserWithThatEmail);
-
-        if (numOfUserWithThatEmail == 1){
-            User user = (User) em.createQuery("SELECT u FROM User u WHERE u.email LIKE: custEmail")
-                                .setParameter("custEmail", email).getSingleResult();
-            System.out.println("Returning 1 user");
-            return Optional.of(user);
-        }else{
-            System.out.println("Returning empty");
-            return Optional.empty();
-        }
+        return userList.isEmpty() ? Optional.empty() : Optional.of(userList.get(0));
     }
+
+    //TODO catch exeption if email already exist
 }

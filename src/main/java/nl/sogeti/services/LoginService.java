@@ -13,12 +13,10 @@ public class LoginService {
 
     public Boolean checkCredentials(User user){
 
-        String email = user.getEmail();
-        String password = user.getPassword();
+        User possibleUser = userRepository.findUserWithEmail(user.getEmail())
+                .orElseThrow(() -> new NotFoundException("user not found"));
 
-        return password.equals(userRepository.findUserWithEmail(email)
-                .orElseThrow(() -> new NotFoundException("user not found"))
-                .getPassword());
+        return user.getPassword().equals(possibleUser.getPassword());
     }
 
 }

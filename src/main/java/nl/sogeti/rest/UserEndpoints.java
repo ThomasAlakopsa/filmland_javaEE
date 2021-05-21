@@ -34,7 +34,6 @@ public class UserEndpoints {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createUser(User user) {
 
-        if (!userService.checkForDuplicateEmail(user)) return Response.ok("Email already taken").build();
         userService.createUser(user);
         return Response.ok("Account succesfully created!").build();
     }
