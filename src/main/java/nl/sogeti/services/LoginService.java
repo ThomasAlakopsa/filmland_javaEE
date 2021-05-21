@@ -1,5 +1,6 @@
 package nl.sogeti.services;
 
+import nl.sogeti.dto.LoginRequestDTO;
 import nl.sogeti.model.User;
 import nl.sogeti.repository.UserRepository;
 
@@ -11,7 +12,8 @@ public class LoginService {
     @Inject
     private UserRepository userRepository;
 
-    public Boolean checkCredentials(User user){
+
+    public Boolean checkCredentials(LoginRequestDTO user){
 
         User possibleUser = userRepository.findUserWithEmail(user.getEmail())
                 .orElseThrow(() -> new NotFoundException("user not found"));

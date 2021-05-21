@@ -34,10 +34,6 @@ public class UserRepository {
 
     @Transactional(Transactional.TxType.REQUIRED)
     public void create(User user) {
-        user.setFirstName(user.getFirstName());
-        user.setLastName(user.getLastName());
-        user.setEmail(user.getEmail());
-        user.setPassword(user.getPassword());
         em.persist(user);
     }
 

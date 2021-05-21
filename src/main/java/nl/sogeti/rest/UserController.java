@@ -1,5 +1,7 @@
 package nl.sogeti.rest;
 
+import nl.sogeti.dto.CreateUserRequest;
+import nl.sogeti.dto.LoginRequestDTO;
 import nl.sogeti.dto.UserDTO;
 import nl.sogeti.model.User;
 import nl.sogeti.repository.UserRepository;
@@ -16,7 +18,7 @@ import java.net.URI;
 import java.util.List;
 
 @Path("/user")
-public class UserEndpoints {
+public class UserController {
 
     @Inject
     private UserService userService;
@@ -42,7 +44,7 @@ public class UserEndpoints {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createUser(User user) {
+    public Response createUser(CreateUserRequest user) {
 
         userService.createUser(user);
         return Response.ok("Account succesfully created!").build();
